@@ -1,16 +1,12 @@
 package com.example.ozan_laptop.bakingapp;
 
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.ozan_laptop.bakingapp.models.Recipe;
-import com.example.ozan_laptop.bakingapp.models.RecipeList;
-import com.squareup.picasso.Picasso;
+import com.example.ozan_laptop.bakingapp.data.models.Recipe;
 
 import java.util.List;
 
@@ -21,7 +17,7 @@ import java.util.List;
 public class RecipeCardRecyclerAdapter extends RecyclerView.Adapter<RecipeCardRecyclerAdapter.RecipeCardViewHolder> {
 
     private final RecipeCardOnClickHandler mClickHandler;
-    private RecipeList mRecipesList;
+    private List<Recipe> mRecipesList;
 
 
     public interface RecipeCardOnClickHandler {
@@ -41,21 +37,21 @@ public class RecipeCardRecyclerAdapter extends RecyclerView.Adapter<RecipeCardRe
 
     @Override
     public void onBindViewHolder(RecipeCardViewHolder holder, int position) {
-        holder.mRecipeCardPoster.setText(mRecipesList.recipeResults.get(position).getName());
+        holder.mRecipeCardPoster.setText(mRecipesList.get(position).getName());
     }
 
     @Override
     public int getItemCount() {
         if (mRecipesList == null)
             return 0;
-        return mRecipesList.recipeResults.size();
+        return mRecipesList.size();
     }
 
     /** this method updates the adapters data
      * @param recipeLists*/
-    public void setData(RecipeList recipeLists) {
+    public void setData(List<Recipe> recipeLists) {
         if (mRecipesList != null)
-            mRecipesList.recipeResults.clear();
+            mRecipesList.clear();
         mRecipesList = recipeLists;
         notifyDataSetChanged();
     }
@@ -66,14 +62,14 @@ public class RecipeCardRecyclerAdapter extends RecyclerView.Adapter<RecipeCardRe
 
         public RecipeCardViewHolder(View itemView) {
             super(itemView);
-            mRecipeCardPoster = (TextView) itemView.findViewById(R.id.recipe_card_img);
+            mRecipeCardPoster = itemView.findViewById(R.id.recipe_card_img);
             itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             if(mRecipesList != null)
-                mClickHandler.onClick(mRecipesList.recipeResults.get(getAdapterPosition()));
+                mClickHandler.onClick(mRecipesList.get(getAdapterPosition()));
         }
     }
 }

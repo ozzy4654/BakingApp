@@ -3,6 +3,7 @@ package com.example.ozan_laptop.bakingapp.services;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.JobIntentService;
@@ -66,13 +67,25 @@ public class RecipeService extends JobIntentService {
         });
     }
 
-    private void sendIntentResponse(boolean hasFailed, @Nullable String json) {
+    final Handler mHandler = new Handler();
 
-        Intent intentResponse = new Intent();
-        intentResponse.setAction(ACTION_MyIntentService);
-        intentResponse.addCategory(Intent.CATEGORY_DEFAULT);
-        intentResponse.putExtra(RESULTS, json);
-        intentResponse.putExtra(FAILURE, hasFailed);
-        sendBroadcast(intentResponse);
+
+
+    private void sendIntentResponse(final boolean hasFailed, @Nullable final String json) {
+
+        mHandler.post(new Runnable() {
+            @Override public void run() {
+                Intent intentResponse = new Intent();
+                intentResponse.setAction(ACTION_MyIntentService);
+                intentResponse.addCategory(Intent.CATEGORY_DEFAULT);
+                intentResponse.putExtra(RESULTS, json);
+                intentResponse.putExtra(FAILURE, hasFailed);
+
+                System.out.println("SENDING THE RESPONSE BABY WTF IS GOING ON");
+                sendBroadcast(intentResponse);
+                stopSelf(JOB_ID);
+            }
+        });
+
     }
 }
