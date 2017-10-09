@@ -1,4 +1,4 @@
-package com.example.ozan_laptop.bakingapp.models;
+package com.example.ozan_laptop.bakingapp.data.models;
 
 /**
  * Created by ozan-laptop on 10/2/2017.
@@ -11,7 +11,7 @@ public class Ingredient {
 
     @SerializedName("quantity")
     @Expose
-    private Integer quantity;
+    private Double quantity;
     @SerializedName("measure")
     @Expose
     private String measure;
@@ -19,11 +19,11 @@ public class Ingredient {
     @Expose
     private String ingredient;
 
-    public Integer getQuantity() {
+    public Double getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Integer quantity) {
+    public void setQuantity(Double quantity) {
         this.quantity = quantity;
     }
 

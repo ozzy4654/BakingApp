@@ -1,4 +1,4 @@
-package com.example.ozan_laptop.bakingapp.models;
+package com.example.ozan_laptop.bakingapp.data.models;
 
 /**
  * Created by ozan-laptop on 10/2/2017.
