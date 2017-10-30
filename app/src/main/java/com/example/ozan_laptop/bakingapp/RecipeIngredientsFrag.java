@@ -44,7 +44,7 @@ public class RecipeIngredientsFrag extends Fragment {
 
 //        mIngredients.setText(R.string.recipe_ingredients_title);
 
-        layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mIngredientsRV.setLayoutManager(layoutManager);
         mRecipeAdapter = new RecipeIngredientsAdapter(this);
         mIngredientsRV.setAdapter(mRecipeAdapter);
