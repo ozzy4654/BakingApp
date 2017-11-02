@@ -23,13 +23,17 @@ import static android.content.Context.CONNECTIVITY_SERVICE;
 
 public class NetworkUtils {
 
+    private static final Gson mGson = new Gson();
+    public static final int TYPE_STEPS = 0;
+    public static final int TYPE_INGREDIENT = 1;
+    public static final int TYPE_DEFUALT = -1;
+
+
     /**
      * This method allow the app to check for network changes
      * so in the event of Network/wifi is down or in airplane mode
      * the app will not crash
      */
-    private static final Gson mGson = new Gson();
-
     public static boolean isOnline(Context context) {
         ConnectivityManager cm =
                 (ConnectivityManager) context.getSystemService(CONNECTIVITY_SERVICE);
@@ -42,16 +46,24 @@ public class NetworkUtils {
         return mGson.toJson(mList);
     }
 
-    public static List<?> convertToObject(String mList,boolean isSteps) {
-        if (isSteps) {
-            Type collectionType = new TypeToken<List<Step>>() {
-            }.getType();
-            return mGson.<List<Step>>fromJson(mList, collectionType);
-        } else {
-            Type collectionType = new TypeToken<List<Recipe>>() {
-            }.getType();
-            return mGson.<List<Recipe>>fromJson(mList, collectionType);
+
+    /**
+     * This method allow the app to convert our arrays of objects
+     * to objects of the desired type.
+     */
+    public static List<?> convertToObject(String mList, int caseNum) {
+        Type collectionType;
+
+        switch (caseNum) {
+            case TYPE_STEPS:
+                collectionType = new TypeToken<List<Step>>() {}.getType();
+                return mGson.<List<Step>>fromJson(mList, collectionType);
+            case TYPE_INGREDIENT:
+                collectionType = new TypeToken<List<Ingredient>>() {}.getType();
+                return mGson.<List<Ingredient>>fromJson(mList, collectionType);
+            default:
+                collectionType = new TypeToken<List<Recipe>>() {}.getType();
+                return mGson.<List<Recipe>>fromJson(mList, collectionType);
         }
     }
-
 }

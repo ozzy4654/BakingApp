@@ -1,4 +1,4 @@
-package com.example.ozan_laptop.bakingapp;
+package com.example.ozan_laptop.bakingapp.fragments.recipeCards;
 
 import android.content.Context;
 import android.net.Uri;
@@ -13,8 +13,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.ozan_laptop.bakingapp.R;
 import com.example.ozan_laptop.bakingapp.data.models.Recipe;
 import com.example.ozan_laptop.bakingapp.data.remote.SOService;
+import com.example.ozan_laptop.bakingapp.fragments.recipeSteps.RecipeStepsFrag;
 import com.example.ozan_laptop.bakingapp.utils.APIUtils;
 
 import java.util.List;
@@ -22,6 +24,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.example.ozan_laptop.bakingapp.utils.NetworkUtils.TYPE_DEFUALT;
 import static com.example.ozan_laptop.bakingapp.utils.NetworkUtils.convertToJson;
 import static com.example.ozan_laptop.bakingapp.utils.NetworkUtils.convertToObject;
 import static com.example.ozan_laptop.bakingapp.utils.NetworkUtils.isOnline;
@@ -32,16 +35,15 @@ import static com.example.ozan_laptop.bakingapp.utils.NetworkUtils.isOnline;
 
 public class RecipeCardFrag extends Fragment implements RecipeCardRecyclerAdapter.RecipeCardOnClickHandler {
 
+    public static final String RECIPE_CARDS = "RECIPE_CARDS";
+
     private LinearLayoutManager layoutManager;
     private SOService mService;
-
-    @BindView(R.id.recipes_list_recycler_view)
-    RecyclerView mRecyclerView;
     private RecipeCardRecyclerAdapter mRecipeAdapter;
-
     private List<Recipe> mRecipeList;
-
     private RecipeCardFrag.OnFragmentInteractionListener mListener;
+
+    @BindView(R.id.recipes_list_recycler_view) RecyclerView mRecyclerView;
 
     public RecipeCardFrag() {
         // Required empty public constructor
@@ -84,7 +86,7 @@ public class RecipeCardFrag extends Fragment implements RecipeCardRecyclerAdapte
             startRecipeService();
             mRecipeAdapter.setData(mRecipeList);
         } else
-            mRecipeAdapter.setData((List<Recipe>) convertToObject(savedInstanceState.getString("CARDS"), false));
+            mRecipeAdapter.setData((List<Recipe>) convertToObject(savedInstanceState.getString(RECIPE_CARDS), TYPE_DEFUALT));
 
         return v;
 
@@ -118,7 +120,7 @@ public class RecipeCardFrag extends Fragment implements RecipeCardRecyclerAdapte
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putString("CARDS", convertToJson(mRecipeList));
+        savedInstanceState.putString(RECIPE_CARDS, convertToJson(mRecipeList));
     }
 
     @Override
@@ -126,8 +128,8 @@ public class RecipeCardFrag extends Fragment implements RecipeCardRecyclerAdapte
         super.onActivityCreated(savedInstanceState);
 
         if(savedInstanceState !=  null) {
-            mRecipeAdapter.setData((List<Recipe>) convertToObject(savedInstanceState.getString("CARDS"), false));
-            mRecipeList = (List<Recipe>) convertToObject(savedInstanceState.getString("CARDS"), false);
+            mRecipeList = (List<Recipe>) convertToObject(savedInstanceState.getString(RECIPE_CARDS), TYPE_DEFUALT);
+            mRecipeAdapter.setData(mRecipeList);
         }
     }
 
@@ -150,8 +152,6 @@ public class RecipeCardFrag extends Fragment implements RecipeCardRecyclerAdapte
 
     @Override
     public void onClick(Recipe mRecipe) {
-        //no op right now
-
         // Create fragment and give it an argument for the selected article
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 

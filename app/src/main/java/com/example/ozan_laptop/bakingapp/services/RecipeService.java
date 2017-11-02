@@ -1,13 +1,11 @@
 package com.example.ozan_laptop.bakingapp.services;
 
-import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.JobIntentService;
-import android.support.v4.content.LocalBroadcastManager;
 
 import com.example.ozan_laptop.bakingapp.R;
 
@@ -18,7 +16,6 @@ import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-//import android.support.v4.app.JobIntentService;
 
 
 /**
@@ -81,7 +78,6 @@ public class RecipeService extends JobIntentService {
                 intentResponse.putExtra(RESULTS, json);
                 intentResponse.putExtra(FAILURE, hasFailed);
 
-                System.out.println("SENDING THE RESPONSE BABY WTF IS GOING ON");
                 sendBroadcast(intentResponse);
                 stopSelf(JOB_ID);
             }

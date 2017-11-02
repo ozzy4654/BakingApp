@@ -1,4 +1,4 @@
-package com.example.ozan_laptop.bakingapp;
+package com.example.ozan_laptop.bakingapp.fragments.recipeIngredients;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.ozan_laptop.bakingapp.R;
 import com.example.ozan_laptop.bakingapp.data.models.Ingredient;
 
 import java.util.List;
@@ -33,13 +34,12 @@ public class RecipeIngredientsAdapter extends RecyclerView.Adapter<RecipeIngredi
 
     @Override
     public void onBindViewHolder(RecipeIngredientVH holder, int position) {
+        holder.mIngredientName.setText(mIngredients.get(position).getIngredient());
         holder.mQty.setText(String.valueOf(mIngredients.get(position).getQuantity()));
         holder.mUnits.setText(mIngredients.get(position).getMeasure());
-        holder.mIngredientName.setText(mIngredients.get(position).getIngredient());
     }
 
     /** this method updates the adapters data
-     * @param
      * @param recipeIngredients */
     public void setData(List<Ingredient> recipeIngredients) {
         if (mIngredients != null)
@@ -65,6 +65,7 @@ public class RecipeIngredientsAdapter extends RecyclerView.Adapter<RecipeIngredi
 
         public RecipeIngredientVH(View itemView) {
             super(itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 }

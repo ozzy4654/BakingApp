@@ -1,4 +1,4 @@
-package com.example.ozan_laptop.bakingapp;
+package com.example.ozan_laptop.bakingapp.fragments.recipeCards;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -6,9 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.ozan_laptop.bakingapp.R;
 import com.example.ozan_laptop.bakingapp.data.models.Recipe;
 
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by ozan-laptop on 10/2/2017.
@@ -58,11 +62,11 @@ public class RecipeCardRecyclerAdapter extends RecyclerView.Adapter<RecipeCardRe
 
     public class RecipeCardViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        final TextView mRecipeCardPoster;
+        @BindView(R.id.recipe_card_img) TextView mRecipeCardPoster;
 
         public RecipeCardViewHolder(View itemView) {
             super(itemView);
-            mRecipeCardPoster = itemView.findViewById(R.id.recipe_card_img);
+            ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
         }
 
