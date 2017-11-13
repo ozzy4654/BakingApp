@@ -27,7 +27,7 @@ public class RecipeStepsRecyclerAdapter extends RecyclerView.Adapter<RecipeSteps
     private Context mContext;
 
     public interface RecipeStepOnClickHandler {
-        void onClick(Step mStep);
+        void onClick(Step mStep, int position);
     }
 
     public RecipeStepsRecyclerAdapter( RecipeStepOnClickHandler stepClickHandler, Context context) {
@@ -84,7 +84,7 @@ public class RecipeStepsRecyclerAdapter extends RecyclerView.Adapter<RecipeSteps
         @Override
         public void onClick(View v) {
             if(mRecipeSteps != null) {
-                mStepClickHandler.onClick(mRecipeSteps.get(getAdapterPosition()));
+                mStepClickHandler.onClick(mRecipeSteps.get(getAdapterPosition()), getAdapterPosition());
             }
         }
     }

@@ -66,4 +66,8 @@ public class NetworkUtils {
                 return mGson.<List<Recipe>>fromJson(mList, collectionType);
         }
     }
+
+    public static Step convertToObject(String step) {
+        return mGson.fromJson(step, Step.class);
+    }
 }

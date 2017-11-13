@@ -32,7 +32,7 @@ import static com.example.ozan_laptop.bakingapp.utils.NetworkUtils.convertToObje
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link RecipeStepsFrag.OnFragmentInteractionListener} interface
+// * {@link RecipeStepsFrag} interface
  * to handle interaction events.
  * Use the {@link RecipeStepsFrag#newInstance} factory method to
  * create an instance of this fragment.
@@ -41,11 +41,13 @@ import static com.example.ozan_laptop.bakingapp.utils.NetworkUtils.convertToObje
 
 public class RecipeStepsFrag extends Fragment implements RecipeStepsRecyclerAdapter.RecipeStepOnClickHandler {
 
-    private static final String ARG_INGREDIENTS = "INGREDIENTS";
-    private static final String ARG_STEPS = "STEPS";
+    public static final String ARG_INGREDIENTS = "INGREDIENTS";
+    public static final String ARG_STEPS = "STEPS";
+    public static final String ARG_INDEX = "INDEX";
 
     private List<Step> mSteps;
     private List<Ingredient> mIngredients;
+    private static Recipe recipe;
     private OnFragmentInteractionListener mListener;
 
     @BindView(R.id.frag_steps_recyclerview) RecyclerView mRecyclerView;
@@ -64,6 +66,7 @@ public class RecipeStepsFrag extends Fragment implements RecipeStepsRecyclerAdap
     public static RecipeStepsFrag newInstance(Recipe mRecipe) {
         RecipeStepsFrag fragment = new RecipeStepsFrag();
         Bundle args = new Bundle();
+        recipe = mRecipe;
         args.putString(RecipeStepsFrag.ARG_INGREDIENTS, convertToJson(mRecipe.getIngredients()));
         args.putString(RecipeStepsFrag.ARG_STEPS, convertToJson(mRecipe.getSteps()));
 
@@ -144,7 +147,7 @@ public class RecipeStepsFrag extends Fragment implements RecipeStepsRecyclerAdap
     }
 
     @Override
-    public void onClick(Step mStep) {
+    public void onClick(Step mStep, int position) {
 
         // Create fragment and give it an argument for the selected article
         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
@@ -154,15 +157,15 @@ public class RecipeStepsFrag extends Fragment implements RecipeStepsRecyclerAdap
 
         if (mStep.getShortDescription().equalsIgnoreCase(getString(R.string.recipe_ingredients_title))){
             transaction.replace(R.id.fragment_container,  RecipeIngredientsFrag.newInstance(mIngredients));
-            transaction.addToBackStack(null);
-
-            // Commit the transaction
-            transaction.commit();
         }
         else
-            System.out.println("FUCK THIS ");
-//            transaction.replace(R.id.fragment_container,  RecipeStepDetailFrag.newInstance(mStep));
-        // TODO: 11/2/2017 fix the rest of the ipmlitation, need to start working on the this fragment.
+            transaction.replace(R.id.fragment_container,  RecipeStepDetailFrag.newInstance(mStep, mSteps, mSteps.indexOf(mStep)));
+
+        transaction.addToBackStack(null);
+
+        // Commit the transaction
+        transaction.commit();
+
     }
 
     /**

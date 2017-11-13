@@ -12,10 +12,13 @@ import android.widget.TextView;
 import com.example.ozan_laptop.bakingapp.fragments.recipeCards.RecipeCardFrag;
 import com.example.ozan_laptop.bakingapp.fragments.recipeSteps.RecipeStepsFrag;
 
+import java.util.ArrayList;
+import java.util.Stack;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements RecipeStepsFrag.OnFragmentInteractionListener, RecipeCardFrag.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements RecipeCardFrag.OnFragmentInteractionListener {
 
     @BindView(R.id.fragment_container)
     FrameLayout mFragContainer;
@@ -73,4 +76,68 @@ public class MainActivity extends AppCompatActivity implements RecipeStepsFrag.O
     public void onFragmentInteraction(Uri uri) {
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//    // take some collection of numbers and return the min value
+//
+//
+//    private Integer findMind(ArrayList<Integer> numList) {
+//
+//        Integer temp = null;
+//
+//
+//        if (numList.size() > 0 )
+//            temp = numList.get(0);
+//        else
+//            return null;
+//
+//        for (int i = 1; i < numList.size(); i++) {
+//            if (temp > numList.get(i))
+//                temp = numList.get(i);
+//        }
+//        return temp;
+//    }
+//
+//    public class MinStack {
+//
+//        private Stack<Integer> numStack = new Stack<>();
+//
+//        public int pop() {
+//            return numStack.pop();
+//        }
+//
+//        public void push(int value) {
+//            numStack.push(value);
+//        }
+//
+//
+//        public int getMin() {
+//
+//            Integer temp = null;
+//
+//            for (Integer numStackValue : numStack) {
+//                if (temp == null || temp > numStackValue)
+//                    temp = numStackValue;
+//            }
+//             return temp;
+//        }
+//    }
+
+
+
+
 }
