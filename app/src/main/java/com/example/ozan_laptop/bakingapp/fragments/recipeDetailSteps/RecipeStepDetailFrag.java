@@ -1,4 +1,4 @@
-package com.example.ozan_laptop.bakingapp.fragments.recipeSteps;
+package com.example.ozan_laptop.bakingapp.fragments.recipeDetailSteps;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -16,20 +16,17 @@ import android.widget.TextView;
 import com.example.ozan_laptop.bakingapp.R;
 import com.example.ozan_laptop.bakingapp.StepIngredientsActivity;
 import com.example.ozan_laptop.bakingapp.data.models.Step;
-import com.example.ozan_laptop.bakingapp.fragments.recipeIngredients.RecipeIngredientsFrag;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-
 import com.google.android.exoplayer2.trackselection.TrackSelection;
-
+import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
