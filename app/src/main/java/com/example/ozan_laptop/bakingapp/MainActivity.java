@@ -1,19 +1,15 @@
 package com.example.ozan_laptop.bakingapp;
 
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.ozan_laptop.bakingapp.fragments.recipeCards.RecipeCardFrag;
-import com.example.ozan_laptop.bakingapp.fragments.recipeSteps.RecipeStepsFrag;
-
-import java.util.ArrayList;
-import java.util.Stack;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

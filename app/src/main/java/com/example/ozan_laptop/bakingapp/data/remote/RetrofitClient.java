@@ -3,7 +3,6 @@ package com.example.ozan_laptop.bakingapp.data.remote;
 
 import com.example.ozan_laptop.bakingapp.BuildConfig;
 
-
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;

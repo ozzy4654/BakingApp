@@ -1,22 +1,22 @@
 package com.example.ozan_laptop.bakingapp.fragments.recipeCards;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.ozan_laptop.bakingapp.R;
+import com.example.ozan_laptop.bakingapp.StepListActivity;
 import com.example.ozan_laptop.bakingapp.data.models.Recipe;
 import com.example.ozan_laptop.bakingapp.data.remote.SOService;
-import com.example.ozan_laptop.bakingapp.fragments.recipeSteps.RecipeStepsFrag;
 import com.example.ozan_laptop.bakingapp.utils.APIUtils;
 
 import java.util.List;
@@ -24,10 +24,14 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.example.ozan_laptop.bakingapp.StepListActivity.INGREDS;
+import static com.example.ozan_laptop.bakingapp.StepListActivity.STEPS;
 import static com.example.ozan_laptop.bakingapp.utils.NetworkUtils.TYPE_DEFUALT;
 import static com.example.ozan_laptop.bakingapp.utils.NetworkUtils.convertToJson;
 import static com.example.ozan_laptop.bakingapp.utils.NetworkUtils.convertToObject;
 import static com.example.ozan_laptop.bakingapp.utils.NetworkUtils.isOnline;
+
+//import com.example.ozan_laptop.bakingapp.fragments.recipeSteps.RecipeStepsFrag;
 
 /**
  * Created by ozan-laptop on 10/7/2017.
@@ -37,7 +41,6 @@ public class RecipeCardFrag extends Fragment implements RecipeCardRecyclerAdapte
 
     public static final String RECIPE_CARDS = "RECIPE_CARDS";
 
-    private LinearLayoutManager layoutManager;
     private SOService mService;
     private RecipeCardRecyclerAdapter mRecipeAdapter;
     private List<Recipe> mRecipeList;
@@ -75,9 +78,8 @@ public class RecipeCardFrag extends Fragment implements RecipeCardRecyclerAdapte
         View v = inflater.inflate(R.layout.fragment_recipe_cards, container, false);
         ButterKnife.bind(this, v);
 
-
-        layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        mRecyclerView.setLayoutManager(layoutManager);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), getSpanCount());
+        mRecyclerView.setLayoutManager(gridLayoutManager);
         mRecipeAdapter = new RecipeCardRecyclerAdapter(this);
         mRecyclerView.setAdapter(mRecipeAdapter);
 
@@ -90,6 +92,15 @@ public class RecipeCardFrag extends Fragment implements RecipeCardRecyclerAdapte
 
         return v;
 
+    }
+
+    //checks if device is tablet sized and updates the gridlayout
+    private int getSpanCount () {
+        float size = getActivity().getResources().getDisplayMetrics().widthPixels/ getActivity().getResources().getDisplayMetrics().density;
+        if (size >= 900)
+            return  4;
+        else
+            return 1;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -152,16 +163,10 @@ public class RecipeCardFrag extends Fragment implements RecipeCardRecyclerAdapte
 
     @Override
     public void onClick(Recipe mRecipe) {
-        // Create fragment and give it an argument for the selected article
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-
-        // Replace whatever is in the fragment_container view with this fragment,
-        // and add the transaction to the back stack so the user can navigate back
-        transaction.replace(R.id.fragment_container,  RecipeStepsFrag.newInstance(mRecipe));
-        transaction.addToBackStack(null);
-
-        // Commit the transaction
-        transaction.commit();
+        Intent stepsIntent = new Intent(getActivity(), StepListActivity.class);
+        stepsIntent.putExtra(INGREDS, convertToJson(mRecipe.getIngredients()));
+        stepsIntent.putExtra(STEPS, convertToJson(mRecipe.getSteps()));
+        startActivity(stepsIntent);
     }
 
 

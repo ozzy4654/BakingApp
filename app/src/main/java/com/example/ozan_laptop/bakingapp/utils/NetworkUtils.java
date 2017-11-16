@@ -4,7 +4,6 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-
 import com.example.ozan_laptop.bakingapp.data.models.Ingredient;
 import com.example.ozan_laptop.bakingapp.data.models.Recipe;
 import com.example.ozan_laptop.bakingapp.data.models.Step;
@@ -12,7 +11,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.util.Collection;
 import java.util.List;
 
 import static android.content.Context.CONNECTIVITY_SERVICE;

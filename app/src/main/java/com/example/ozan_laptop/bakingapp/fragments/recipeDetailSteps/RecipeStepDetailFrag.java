@@ -1,6 +1,7 @@
 package com.example.ozan_laptop.bakingapp.fragments.recipeSteps;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,7 +14,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.ozan_laptop.bakingapp.R;
+import com.example.ozan_laptop.bakingapp.StepIngredientsActivity;
 import com.example.ozan_laptop.bakingapp.data.models.Step;
+import com.example.ozan_laptop.bakingapp.fragments.recipeIngredients.RecipeIngredientsFrag;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -36,10 +39,12 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Optional;
 
-import static com.example.ozan_laptop.bakingapp.fragments.recipeSteps.RecipeStepsFrag.ARG_INDEX;
-import static com.example.ozan_laptop.bakingapp.fragments.recipeSteps.RecipeStepsFrag.ARG_INGREDIENTS;
-import static com.example.ozan_laptop.bakingapp.fragments.recipeSteps.RecipeStepsFrag.ARG_STEPS;
+import static com.example.ozan_laptop.bakingapp.StepListActivity.INDEX;
+import static com.example.ozan_laptop.bakingapp.StepListActivity.INGREDS;
+import static com.example.ozan_laptop.bakingapp.StepListActivity.STEPS;
+import static com.example.ozan_laptop.bakingapp.StepListActivity.STEP_ITEM;
 import static com.example.ozan_laptop.bakingapp.utils.NetworkUtils.TYPE_STEPS;
 import static com.example.ozan_laptop.bakingapp.utils.NetworkUtils.convertToJson;
 import static com.example.ozan_laptop.bakingapp.utils.NetworkUtils.convertToObject;
@@ -50,8 +55,7 @@ import static com.example.ozan_laptop.bakingapp.utils.NetworkUtils.convertToObje
 
 public class RecipeStepDetailFrag extends Fragment {
 
-    private static final DefaultBandwidthMeter BANDWIDTH_METER =
-            new DefaultBandwidthMeter();
+    private static final DefaultBandwidthMeter BANDWIDTH_METER = new DefaultBandwidthMeter();
 
     private SimpleExoPlayer mExoPlayer;
     private String mp4String;
@@ -65,8 +69,14 @@ public class RecipeStepDetailFrag extends Fragment {
     private Step mStep;
 
     @BindView(R.id.playerView) SimpleExoPlayerView mPlayer;
+
+    @Nullable
     @BindView(R.id.step_instruction_txt) TextView mStepInstructions;
+
+    @Nullable
     @BindView(R.id.prev_step) Button  mPrevStep;
+
+    @Nullable
     @BindView(R.id.nxt_step) Button mNextStep;
 
 
@@ -75,12 +85,12 @@ public class RecipeStepDetailFrag extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            String stepDetail = getArguments().getString(ARG_INGREDIENTS);
-            String steps = getArguments().getString(ARG_STEPS);
+            String stepDetail = getArguments().getString(STEP_ITEM);
+            String steps = getArguments().getString(STEPS);
 
             mSteps = (List<Step>) convertToObject(steps, TYPE_STEPS);
             mStep = convertToObject(stepDetail);
-            stepsIndex = getArguments().getInt(ARG_INDEX, 1);
+            stepsIndex = getArguments().getInt(INDEX, 1);
         }
     }
 
@@ -92,38 +102,29 @@ public class RecipeStepDetailFrag extends Fragment {
         View v = inflater.inflate(R.layout.fragment_recipe_detailed_step, container, false);
         ButterKnife.bind(this, v);
 
-        mStepInstructions.setText(mStep.getDescription());
+        if (mStepInstructions != null) {
+            mStepInstructions.setText(mStep.getDescription());
+        }
         mp4String = mStep.getVideoURL();
         thumbnail = mStep.getThumbnailURL();
 
-        setBtnVisibility(stepsIndex);
+
+        if ((mPrevStep != null) && mNextStep != null){
+            setBtnVisibility(stepsIndex);
+        }
 
         setupPlayer();
 
         return v;
     }
 
-    public static RecipeStepDetailFrag newInstance(Step recipe, List<Step> mSteps, int position) {
-        RecipeStepDetailFrag frag = new RecipeStepDetailFrag();
-        Bundle args = new Bundle();
-
-        args.putString(ARG_INGREDIENTS, convertToJson(recipe));
-        args.putString(ARG_STEPS, convertToJson(mSteps));
-        args.putInt(ARG_INDEX, position);
-
-        frag.setArguments(args);
-        return frag;
-    }
-
-
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null){
-            mSteps = (List<Step>) convertToObject( savedInstanceState.getString(ARG_STEPS),TYPE_STEPS);
-            mStep =  convertToObject(savedInstanceState.getString(ARG_INGREDIENTS));
-            stepsIndex = savedInstanceState.getInt(ARG_INDEX, 1);
+            mSteps = (List<Step>) convertToObject( savedInstanceState.getString(STEPS),TYPE_STEPS);
+            mStep =  convertToObject(savedInstanceState.getString(STEP_ITEM));
+            stepsIndex = savedInstanceState.getInt(INDEX, 1);
         }
     }
 
@@ -163,7 +164,7 @@ public class RecipeStepDetailFrag extends Fragment {
     }
 
     private void setBtnVisibility(int index) {
-        if (index > 1) {
+        if (index >= 0) {
             if (index >= mSteps.size()-1) {
                 mNextStep.setVisibility(View.GONE);
             } else
@@ -177,6 +178,18 @@ public class RecipeStepDetailFrag extends Fragment {
         }
     }
 
+    private void startIngredientsActivity() {
+
+        Intent intent = new Intent(getActivity(), StepIngredientsActivity.class);
+        intent.putExtra(INGREDS,
+                getActivity().getIntent().getStringExtra(INGREDS));
+        intent.putExtra(STEP_ITEM,
+                convertToJson(mSteps.get(1)));
+        intent.putExtra(STEPS, getArguments().getString(STEPS));
+        startActivity(intent);
+    }
+
+    @Optional
     @OnClick(R.id.nxt_step)
     public void onNextClicked() {
 
@@ -189,6 +202,7 @@ public class RecipeStepDetailFrag extends Fragment {
         }
     }
 
+    @Optional
     @OnClick(R.id.prev_step)
     public void onPrevClicked() {
         if (stepsIndex > 1 ) {
@@ -197,6 +211,8 @@ public class RecipeStepDetailFrag extends Fragment {
             mStepInstructions.setText( mSteps.get(stepsIndex).getDescription());
             mp4String = mSteps.get(stepsIndex).getVideoURL();
             setupPlayer();
+        } else {
+            startIngredientsActivity();
         }
     }
 
@@ -213,9 +229,10 @@ public class RecipeStepDetailFrag extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putString(ARG_STEPS, getArguments().getString(ARG_STEPS));
-        savedInstanceState.putString(ARG_INGREDIENTS, getArguments().getString(ARG_INGREDIENTS));
-        savedInstanceState.putInt(ARG_INDEX, stepsIndex);
+        savedInstanceState.putString(STEPS, getArguments().getString(STEPS));
+        savedInstanceState.putString(INGREDS, getActivity().getIntent().getStringExtra(INGREDS));
+        savedInstanceState.putString(STEP_ITEM, getArguments().getString(STEP_ITEM));
+        savedInstanceState.putInt(INDEX, stepsIndex);
 
     }
 

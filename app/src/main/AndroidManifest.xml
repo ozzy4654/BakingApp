@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.ozan_laptop.bakingapp">
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
@@ -13,18 +13,42 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <service android:name=".services.RecipeService"
-            android:permission="android.permission.BIND_JOB_SERVICE"
+        <service
+            android:name=".services.RecipeService"
             android:exported="false"
-            />
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <activity
+            android:name=".StepListActivity"
+            android:label="@string/title_step_list"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity
+            android:name=".StepIngredientsActivity"
+            android:label="Ingredients"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".StepListActivity"/>
+        </activity>
+
+        <activity
+            android:name=".StepDetailActivity"
+            android:label="@string/title_step_detail"
+            android:parentActivityName=".StepListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.ozan_laptop.bakingapp.StepListActivity" />
+        </activity>
     </application>
 
 </manifest>

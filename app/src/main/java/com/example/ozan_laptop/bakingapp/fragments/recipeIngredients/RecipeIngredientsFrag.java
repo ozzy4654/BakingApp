@@ -1,6 +1,7 @@
 package com.example.ozan_laptop.bakingapp.fragments.recipeIngredients;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,17 +10,23 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.ozan_laptop.bakingapp.R;
+import com.example.ozan_laptop.bakingapp.StepDetailActivity;
 import com.example.ozan_laptop.bakingapp.data.models.Ingredient;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Optional;
 
+import static com.example.ozan_laptop.bakingapp.StepListActivity.INGREDS;
+import static com.example.ozan_laptop.bakingapp.StepListActivity.STEPS;
+import static com.example.ozan_laptop.bakingapp.StepListActivity.STEP_ITEM;
 import static com.example.ozan_laptop.bakingapp.utils.NetworkUtils.TYPE_INGREDIENT;
-import static com.example.ozan_laptop.bakingapp.utils.NetworkUtils.convertToJson;
 import static com.example.ozan_laptop.bakingapp.utils.NetworkUtils.convertToObject;
 
 /**
@@ -27,25 +34,17 @@ import static com.example.ozan_laptop.bakingapp.utils.NetworkUtils.convertToObje
  */
 public class RecipeIngredientsFrag extends Fragment {
 
-    private static final String ARG_PARAM1 = "shix";
     private RecipeIngredientsAdapter mRecipeAdapter;
     private List<Ingredient> mIngredients;
 
     @BindView(R.id.frag_ingredients_recyclerview)
     RecyclerView mIngredientsRV;
 
+    @Nullable
+    @BindView(R.id.nxt_step_btn) Button mNextStep;
+
     public RecipeIngredientsFrag() {
         // Required empty public constructor
-    }
-
-    public static RecipeIngredientsFrag newInstance(List<Ingredient> ingredient) {
-
-        Bundle args = new Bundle();
-
-        RecipeIngredientsFrag fragment = new RecipeIngredientsFrag();
-        args.putString(RecipeIngredientsFrag.ARG_PARAM1, convertToJson(ingredient));
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -64,19 +63,30 @@ public class RecipeIngredientsFrag extends Fragment {
 
     }
 
+    @Optional
+    @OnClick(R.id.nxt_step_btn)
+    public void onClick () {
+
+        Intent intent = new Intent(getActivity(), StepDetailActivity.class);
+        intent.putExtra(STEP_ITEM, getActivity().getIntent().getStringExtra(STEP_ITEM));
+        intent.putExtra(STEPS, getActivity().getIntent().getStringExtra(STEPS));
+        intent.putExtra(INGREDS, getActivity().getIntent().getStringExtra(INGREDS));
+        startActivity(intent);
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            String mParam1 = getArguments().getString(ARG_PARAM1);
-            mIngredients = (List<Ingredient>) convertToObject( mParam1, TYPE_INGREDIENT);
+            String ingredients = getArguments().getString(INGREDS);
+            mIngredients = (List<Ingredient>) convertToObject( ingredients, TYPE_INGREDIENT);
         }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("Ingredients", getArguments().getString(ARG_PARAM1));
+        outState.putString("Ingredients", getArguments().getString(INGREDS));
     }
 
     @Override
