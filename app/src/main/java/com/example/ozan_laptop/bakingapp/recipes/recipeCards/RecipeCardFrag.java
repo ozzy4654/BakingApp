@@ -1,4 +1,4 @@
-package com.example.ozan_laptop.bakingapp.fragments.recipeCards;
+package com.example.ozan_laptop.bakingapp.recipes.recipeCards;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,7 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.ozan_laptop.bakingapp.R;
-import com.example.ozan_laptop.bakingapp.StepListActivity;
+import com.example.ozan_laptop.bakingapp.recipes.recipeSteps.StepListActivity;
 import com.example.ozan_laptop.bakingapp.data.models.Recipe;
 import com.example.ozan_laptop.bakingapp.data.remote.SOService;
 import com.example.ozan_laptop.bakingapp.utils.APIUtils;
@@ -24,8 +24,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.example.ozan_laptop.bakingapp.StepListActivity.INGREDS;
-import static com.example.ozan_laptop.bakingapp.StepListActivity.STEPS;
+import static com.example.ozan_laptop.bakingapp.recipes.recipeSteps.StepListActivity.INGREDS;
+import static com.example.ozan_laptop.bakingapp.recipes.recipeSteps.StepListActivity.STEPS;
 import static com.example.ozan_laptop.bakingapp.utils.NetworkUtils.TYPE_DEFUALT;
 import static com.example.ozan_laptop.bakingapp.utils.NetworkUtils.convertToJson;
 import static com.example.ozan_laptop.bakingapp.utils.NetworkUtils.convertToObject;

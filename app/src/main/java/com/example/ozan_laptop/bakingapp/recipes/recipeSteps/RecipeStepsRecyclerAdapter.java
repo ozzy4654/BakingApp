@@ -1,4 +1,4 @@
-package com.example.ozan_laptop.bakingapp.fragments.recipeSteps;
+package com.example.ozan_laptop.bakingapp.recipes.recipeSteps;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

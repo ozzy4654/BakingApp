@@ -1,4 +1,4 @@
-package com.example.ozan_laptop.bakingapp.fragments.recipeIngredients;
+package com.example.ozan_laptop.bakingapp.recipes.recipeIngredients;
 
 
 import android.content.Intent;
@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.ozan_laptop.bakingapp.R;
-import com.example.ozan_laptop.bakingapp.StepDetailActivity;
+import com.example.ozan_laptop.bakingapp.recipes.recipeDetailSteps.StepDetailActivity;
 import com.example.ozan_laptop.bakingapp.data.models.Ingredient;
 
 import java.util.List;
@@ -23,9 +23,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Optional;
 
-import static com.example.ozan_laptop.bakingapp.StepListActivity.INGREDS;
-import static com.example.ozan_laptop.bakingapp.StepListActivity.STEPS;
-import static com.example.ozan_laptop.bakingapp.StepListActivity.STEP_ITEM;
+import static com.example.ozan_laptop.bakingapp.recipes.recipeSteps.StepListActivity.INGREDS;
+import static com.example.ozan_laptop.bakingapp.recipes.recipeSteps.StepListActivity.STEPS;
+import static com.example.ozan_laptop.bakingapp.recipes.recipeSteps.StepListActivity.STEP_ITEM;
 import static com.example.ozan_laptop.bakingapp.utils.NetworkUtils.TYPE_INGREDIENT;
 import static com.example.ozan_laptop.bakingapp.utils.NetworkUtils.convertToObject;
 

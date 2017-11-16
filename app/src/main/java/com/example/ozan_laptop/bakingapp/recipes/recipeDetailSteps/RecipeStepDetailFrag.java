@@ -1,4 +1,4 @@
-package com.example.ozan_laptop.bakingapp.fragments.recipeDetailSteps;
+package com.example.ozan_laptop.bakingapp.recipes.recipeDetailSteps;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -14,7 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.ozan_laptop.bakingapp.R;
-import com.example.ozan_laptop.bakingapp.StepIngredientsActivity;
+import com.example.ozan_laptop.bakingapp.recipes.recipeIngredients.StepIngredientsActivity;
 import com.example.ozan_laptop.bakingapp.data.models.Step;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
@@ -38,10 +38,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Optional;
 
-import static com.example.ozan_laptop.bakingapp.StepListActivity.INDEX;
-import static com.example.ozan_laptop.bakingapp.StepListActivity.INGREDS;
-import static com.example.ozan_laptop.bakingapp.StepListActivity.STEPS;
-import static com.example.ozan_laptop.bakingapp.StepListActivity.STEP_ITEM;
+import static com.example.ozan_laptop.bakingapp.recipes.recipeSteps.StepListActivity.INDEX;
+import static com.example.ozan_laptop.bakingapp.recipes.recipeSteps.StepListActivity.INGREDS;
+import static com.example.ozan_laptop.bakingapp.recipes.recipeSteps.StepListActivity.STEPS;
+import static com.example.ozan_laptop.bakingapp.recipes.recipeSteps.StepListActivity.STEP_ITEM;
 import static com.example.ozan_laptop.bakingapp.utils.NetworkUtils.TYPE_STEPS;
 import static com.example.ozan_laptop.bakingapp.utils.NetworkUtils.convertToJson;
 import static com.example.ozan_laptop.bakingapp.utils.NetworkUtils.convertToObject;
@@ -51,6 +51,11 @@ import static com.example.ozan_laptop.bakingapp.utils.NetworkUtils.convertToObje
  */
 
 public class RecipeStepDetailFrag extends Fragment {
+
+    public static final String VIDEO_POSITION = "VIDEO_POSITION";
+    public static final String VIDEO_WINDOW = "VIDEO_WINDOW";
+    public static final String VIDEO_URL = "VIDEO_POSITION";
+    public static final String VIDEO_PLAYBACK = "VIDEO_PLAYBACK";
 
     private static final DefaultBandwidthMeter BANDWIDTH_METER = new DefaultBandwidthMeter();
 
@@ -77,6 +82,9 @@ public class RecipeStepDetailFrag extends Fragment {
     @BindView(R.id.nxt_step) Button mNextStep;
 
 
+    public RecipeStepDetailFrag() {
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,7 +99,6 @@ public class RecipeStepDetailFrag extends Fragment {
         }
     }
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -102,13 +109,13 @@ public class RecipeStepDetailFrag extends Fragment {
         if (mStepInstructions != null) {
             mStepInstructions.setText(mStep.getDescription());
         }
-        mp4String = mStep.getVideoURL();
-        thumbnail = mStep.getThumbnailURL();
-
 
         if ((mPrevStep != null) && mNextStep != null){
             setBtnVisibility(stepsIndex);
         }
+
+        mp4String = mStep.getVideoURL();
+        thumbnail = mStep.getThumbnailURL();
 
         setupPlayer();
 
@@ -122,15 +129,18 @@ public class RecipeStepDetailFrag extends Fragment {
             mSteps = (List<Step>) convertToObject( savedInstanceState.getString(STEPS),TYPE_STEPS);
             mStep =  convertToObject(savedInstanceState.getString(STEP_ITEM));
             stepsIndex = savedInstanceState.getInt(INDEX, 1);
+
+            playbackPosition = savedInstanceState.getLong(VIDEO_POSITION, 0);
+            currentWindow = savedInstanceState.getInt(VIDEO_WINDOW, 0);
+            playWhenReady = savedInstanceState.getBoolean(VIDEO_PLAYBACK);
+            mp4String = savedInstanceState.getString(VIDEO_URL);
+
+
         }
     }
 
     private void setupPlayer() {
 
-        if (mp4String.equalsIgnoreCase("")){
-            mPlayer.setVisibility(View.GONE);
-            return;
-        }
         if (mExoPlayer == null) {
             mPlayer.setVisibility(View.VISIBLE);
             // a factory to create an AdaptiveVideoTrackSelection
@@ -151,9 +161,11 @@ public class RecipeStepDetailFrag extends Fragment {
             mExoPlayer.prepare(mediaSource, true, false);
 
         } else {
-            Uri uri = Uri.parse(mp4String);
+            Uri uri = Uri.parse(mStep.getVideoURL());
             MediaSource mediaSource = buildMediaSource(uri);
-            mExoPlayer.prepare(mediaSource, true, false);
+            mExoPlayer.prepare(mediaSource, false, false);
+            mExoPlayer.seekTo(currentWindow, playbackPosition);
+            mExoPlayer.setPlayWhenReady(playWhenReady);
             mPlayer.setVisibility(View.VISIBLE);
 
         }
@@ -231,6 +243,10 @@ public class RecipeStepDetailFrag extends Fragment {
         savedInstanceState.putString(STEP_ITEM, getArguments().getString(STEP_ITEM));
         savedInstanceState.putInt(INDEX, stepsIndex);
 
+        savedInstanceState.putString(VIDEO_URL, mp4String);
+        savedInstanceState.putLong(VIDEO_POSITION, mExoPlayer.getCurrentPosition());
+        savedInstanceState.putInt(VIDEO_WINDOW, mExoPlayer.getCurrentWindowIndex());
+        savedInstanceState.putBoolean(VIDEO_PLAYBACK, mExoPlayer.getPlayWhenReady());
     }
 
     private MediaSource buildMediaSource(Uri uri) {
@@ -239,8 +255,14 @@ public class RecipeStepDetailFrag extends Fragment {
                 new DefaultExtractorsFactory(), null, null);
     }
 
-
-    public RecipeStepDetailFrag() {
+    private void releasePlayer() {
+        if (mExoPlayer != null) {
+            playbackPosition = mExoPlayer.getCurrentPosition();
+            currentWindow = mExoPlayer.getCurrentWindowIndex();
+            playWhenReady = mExoPlayer.getPlayWhenReady();
+            mExoPlayer.release();
+            mExoPlayer = null;
+        }
     }
 
     @Override
@@ -272,16 +294,6 @@ public class RecipeStepDetailFrag extends Fragment {
         super.onStop();
         if (Util.SDK_INT > 23) {
             releasePlayer();
-        }
-    }
-
-    private void releasePlayer() {
-        if (mExoPlayer != null) {
-            playbackPosition = mExoPlayer.getCurrentPosition();
-            currentWindow = mExoPlayer.getCurrentWindowIndex();
-            playWhenReady = mExoPlayer.getPlayWhenReady();
-            mExoPlayer.release();
-            mExoPlayer = null;
         }
     }
 

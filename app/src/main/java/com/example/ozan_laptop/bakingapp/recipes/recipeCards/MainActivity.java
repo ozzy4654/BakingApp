@@ -1,4 +1,4 @@
-package com.example.ozan_laptop.bakingapp;
+package com.example.ozan_laptop.bakingapp.recipes.recipeCards;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,7 +9,8 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.ozan_laptop.bakingapp.fragments.recipeCards.RecipeCardFrag;
+import com.example.ozan_laptop.bakingapp.R;
+import com.example.ozan_laptop.bakingapp.recipes.recipeCards.RecipeCardFrag;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

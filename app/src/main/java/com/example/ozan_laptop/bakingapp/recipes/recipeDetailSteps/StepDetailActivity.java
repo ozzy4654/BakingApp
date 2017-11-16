@@ -1,4 +1,4 @@
-package com.example.ozan_laptop.bakingapp;
+package com.example.ozan_laptop.bakingapp.recipes.recipeDetailSteps;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,19 +7,26 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import com.example.ozan_laptop.bakingapp.fragments.recipeIngredients.RecipeIngredientsFrag;
+import com.example.ozan_laptop.bakingapp.R;
+import com.example.ozan_laptop.bakingapp.recipes.recipeDetailSteps.RecipeStepDetailFrag;
+import com.example.ozan_laptop.bakingapp.recipes.recipeSteps.StepListActivity;
 
 import butterknife.ButterKnife;
 
-import static com.example.ozan_laptop.bakingapp.StepListActivity.INGREDS;
-import static com.example.ozan_laptop.bakingapp.StepListActivity.STEPS;
+import static com.example.ozan_laptop.bakingapp.recipes.recipeSteps.StepListActivity.INDEX;
+import static com.example.ozan_laptop.bakingapp.recipes.recipeSteps.StepListActivity.INGREDS;
+import static com.example.ozan_laptop.bakingapp.recipes.recipeSteps.StepListActivity.STEPS;
+import static com.example.ozan_laptop.bakingapp.recipes.recipeSteps.StepListActivity.STEP_ITEM;
 
 /**
- * Created by Ozan on 11/15/2017.
+ * An activity representing a single Step detail screen. This
+ * activity is only used on narrow width devices. On tablet-size devices,
+ * item details are presented side-by-side with a list of items
+ * in a {@link StepListActivity}.
  */
+public class StepDetailActivity extends AppCompatActivity {
 
-public class StepIngredientsActivity extends AppCompatActivity {
-
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_step_detail);
@@ -46,8 +53,11 @@ public class StepIngredientsActivity extends AppCompatActivity {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putString(INGREDS, getIntent().getStringExtra(INGREDS));
-            RecipeIngredientsFrag fragment = new RecipeIngredientsFrag();
+            arguments.putString(STEP_ITEM, getIntent().getStringExtra(STEP_ITEM));
+            arguments.putString(STEPS, getIntent().getStringExtra(STEPS));
+            arguments.putInt(INDEX, getIntent().getIntExtra(INDEX,1));
+
+            RecipeStepDetailFrag fragment = new RecipeStepDetailFrag();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.step_detail_container, fragment)

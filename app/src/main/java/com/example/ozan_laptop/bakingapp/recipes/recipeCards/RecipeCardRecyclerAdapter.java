@@ -1,4 +1,4 @@
-package com.example.ozan_laptop.bakingapp.fragments.recipeCards;
+package com.example.ozan_laptop.bakingapp.recipes.recipeCards;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;

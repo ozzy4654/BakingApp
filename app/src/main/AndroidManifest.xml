@@ -13,7 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".recipes.recipeCards.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,27 +27,27 @@
             android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <activity
-            android:name=".StepListActivity"
+            android:name=".recipes.recipeSteps.StepListActivity"
             android:label="@string/title_step_list"
             android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity
-            android:name=".StepIngredientsActivity"
+            android:name=".recipes.recipeIngredients.StepIngredientsActivity"
             android:label="Ingredients"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".StepListActivity"/>
+                android:value=".recipes.recipeSteps.StepListActivity"/>
         </activity>
 
         <activity
-            android:name=".StepDetailActivity"
+            android:name=".recipes.recipeDetailSteps.StepDetailActivity"
             android:label="@string/title_step_detail"
-            android:parentActivityName=".StepListActivity"
+            android:parentActivityName=".recipes.recipeSteps.StepListActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.ozan_laptop.bakingapp.StepListActivity" />
+                android:value="com.example.ozan_laptop.bakingapp.recipes.recipeSteps.StepListActivity" />
         </activity>
     </application>
 

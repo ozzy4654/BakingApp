@@ -9,5 +9,5 @@
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
-    tools:context="com.example.ozan_laptop.bakingapp.StepListActivity"
+    tools:context="com.example.ozan_laptop.bakingapp.recipes.recipeSteps.StepListActivity"
     tools:listitem="@layout/step_list_content" />

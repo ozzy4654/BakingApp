@@ -1,4 +1,4 @@
-package com.example.ozan_laptop.bakingapp;
+package com.example.ozan_laptop.bakingapp.recipes.recipeSteps;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,10 +15,14 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.example.ozan_laptop.bakingapp.R;
+import com.example.ozan_laptop.bakingapp.recipes.recipeDetailSteps.StepDetailActivity;
+import com.example.ozan_laptop.bakingapp.recipes.recipeIngredients.StepIngredientsActivity;
 import com.example.ozan_laptop.bakingapp.data.models.Ingredient;
 import com.example.ozan_laptop.bakingapp.data.models.Step;
-import com.example.ozan_laptop.bakingapp.fragments.recipeDetailSteps.RecipeStepDetailFrag;
-import com.example.ozan_laptop.bakingapp.fragments.recipeIngredients.RecipeIngredientsFrag;
+import com.example.ozan_laptop.bakingapp.recipes.recipeCards.MainActivity;
+import com.example.ozan_laptop.bakingapp.recipes.recipeDetailSteps.RecipeStepDetailFrag;
+import com.example.ozan_laptop.bakingapp.recipes.recipeIngredients.RecipeIngredientsFrag;
 
 import java.util.List;
 

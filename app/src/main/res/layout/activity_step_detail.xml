@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.example.ozan_laptop.bakingapp.StepDetailActivity"
+    tools:context="com.example.ozan_laptop.bakingapp.recipes.recipeDetailSteps.StepDetailActivity"
     tools:ignore="MergeRootFrame">
 
     <FrameLayout
